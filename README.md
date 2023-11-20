@@ -1,75 +1,60 @@
-# Research-management-system-for-university-management-system-
-
 class Researcher:
-    def __init__(self, name, id, program):
+    def __init__(self, name, program, research_interests):
         self.name = name
-        self.id = id
-        self.program = program
-        self.projects = []
+        self.program = program  # MPhil or PhD
+        self.research_interests = research_interests
 
-    def add_project(self, project):
-        self.projects.append(project)
+    def __str__(self):
+        return f"{self.name} ({self.program}): {', '.join(self.research_interests)}"
 
 class ResearchProject:
-    def __init__(self, title, status, supervisor):
+    def __init__(self, title, description, researchers=None):
         self.title = title
-        self.status = status
-        self.supervisor = supervisor
-        self.tasks = []
-
-    def add_task(self, task):
-        self.tasks.append(task)
-
-class Task:
-    def __init__(self, description, deadline):
         self.description = description
-        self.deadline = deadline
-        self.completed = False
-
-    def mark_as_completed(self):
-        self.completed = True
-
-class ResearchManagementSystem:
-    def __init__(self):
-        self.researchers = []
-        self.projects = []
+        self.researchers = researchers if researchers else []
 
     def add_researcher(self, researcher):
         self.researchers.append(researcher)
 
-    def add_project(self, project):
-        self.projects.append(project)
+    def __str__(self):
+        researchers_str = ", ".join([researcher.name for researcher in self.researchers])
+        return f"Project: {self.title}\nDescription: {self.description}\nResearchers: {researchers_str}"
 
-# Example usage:
+class ResearchManagementSystem:
+    def __init__(self):
+        self.researchers = []
+        self.research_projects = []
 
-# Create researchers
-researcher1 = Researcher("John Doe", "R001", "PhD")
-researcher2 = Researcher("Jane Smith", "R002", "MPhil")
+    def add_researcher(self, researcher):
+        self.researchers.append(researcher)
 
-# Create projects
-project1 = ResearchProject("Machine Learning in Healthcare", "Ongoing", "Dr. Smith")
-project2 = ResearchProject("Environmental Sustainability", "Completed", "Prof. Johnson")
+    def create_research_project(self, title, description, researchers=None):
+        project = ResearchProject(title, description, researchers)
+        self.research_projects.append(project)
+        return project
 
-# Assign projects to researchers
-researcher1.add_project(project1)
-researcher2.add_project(project2)
+    def print_research_details(self):
+        for researcher in self.researchers:
+            print(researcher)
+            associated_projects = [project for project in self.research_projects if researcher in project.researchers]
+            for project in associated_projects:
+                print(project)
+            print("\n")
 
-# Create tasks for a project
-task1 = Task("Literature Review", "2023-12-01")
-task2 = Task("Data Collection", "2024-02-15")
 
-# Add tasks to a project
-project1.add_task(task1)
-project1.add_task(task2)
+taha_mphil = Researcher("Taha", "MPhil", ["Advance Machine Learning"])
+hamza_phd = Researcher("Hamza", "PhD", ["Robotics"])
 
-# Mark a task as completed
-task1.mark_as_completed()
 
-# Create a research management system
 rms = ResearchManagementSystem()
 
-# Add researchers and projects to the system
-rms.add_researcher(researcher1)
-rms.add_researcher(researcher2)
-rms.add_project(project1)
-rms.add_project(project2)
+
+rms.add_researcher(taha_mphil)
+rms.add_researcher(hamza_phd)
+
+
+project1 = rms.create_research_project("Advance Machine Learning", "Exploring the latest advancements in ML", [taha_mphil])
+
+project2 = rms.create_research_project("Robotics", "Applications of robotics in various domains", [hamza_phd])
+
+rms.print_research_details()
