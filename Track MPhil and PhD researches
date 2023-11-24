@@ -1,3 +1,5 @@
+Muhmmad Taha 
+BSEEN1E02045
 class Researcher:
     def __init__(self, name, program, research_interests):
         self.name = name
