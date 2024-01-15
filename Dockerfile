@@ -1,16 +1,13 @@
 FROM python:3.9-slim
 
 #Set the working directory
-WORKDIR /app
+WORKDIR /researchproject-image
 
 #python scripts
-COPY main.py .
-COPY researcher.py .
-COPY researcherproject.py .
-COPY researchmanagementsystem.py .
+COPY ./ /researchproject-image/
 
 # Run main.py
 CMD ["python", "main.py"]
 #Terminal Commands
-#docker build -t Research-app
-# docker run Research-app 
+#docker image build -t research-app:1.0 ./
+# docker tag research-app1.0 tahab1/research-app:1.0
